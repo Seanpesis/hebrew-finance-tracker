@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Typography,
   Card,
   CardContent,
-  Button,
   List,
   ListItem,
   ListItemIcon,
@@ -28,7 +27,7 @@ const FinancialAdvisor = ({ expenses, income, goals }) => {
   const [tips, setTips] = useState([]);
   const [alerts, setAlerts] = useState([]);
 
-  const analyzeFinances = () => {
+  const analyzeFinances = useCallback(() => {
     const newTips = [];
     const newAlerts = [];
 
@@ -124,11 +123,11 @@ const FinancialAdvisor = ({ expenses, income, goals }) => {
 
     setTips(newTips);
     setAlerts(newAlerts);
-  };
+  }, [expenses, income, goals]);
 
   useEffect(() => {
     analyzeFinances();
-  }, [expenses, income, goals]);
+  }, [analyzeFinances]);
 
   return (
     <Card 
