@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ThemeProvider, createTheme, CssBaseline, Box, StyledEngineProvider } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -69,18 +69,25 @@ const AppContent = () => {
     <>
       <Navbar />
       <Box sx={{ p: 3, direction: 'rtl' }}>
-        <Switch>
-          <PrivateRoute exact path="/" component={Dashboard} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/login"
-            render={() => (token ? <Redirect to="/" /> : <Login />)}
+            element={token ? <Navigate to="/" /> : <Login />}
           />
           <Route
             path="/register"
-            render={() => (token ? <Redirect to="/" /> : <Register />)}
+            element={token ? <Navigate to="/" /> : <Register />}
           />
-          <Route component={NotFound} />
-        </Switch>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </Box>
     </>
   );
